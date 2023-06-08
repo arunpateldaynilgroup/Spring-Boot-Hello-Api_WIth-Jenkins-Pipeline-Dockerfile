@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clone') {
+            steps {
+                git branch: 'main', url: 'https://github.com/your-repo.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Execute any build commands specific to your project
+                sh 'docker build -t your-image .'
+            }
+        }
+
+        stage('Push to Docker Hub') {
+            steps {
+                withCredentials([string(credentialsId: 'dockerhub-credentials', variable: 'DOCKERHUB_CREDENTIALS')]) {
+                    sh 'docker login -u your-dockerhub-username -p $DOCKERHUB_CREDENTIALS'
+                    sh 'docker tag your-image your-dockerhub-username/your-repo:latest'
+                    sh 'docker push your-dockerhub-username/your-repo:latest'
+                }
+            }
+        }
+    }
+}
