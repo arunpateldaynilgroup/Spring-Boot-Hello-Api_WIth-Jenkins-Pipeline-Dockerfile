@@ -23,7 +23,7 @@ pipeline {
                     sh 'docker login -u arunpateldaynil -p $dockerpwd'
                     script {
                         def currentDate = sh(returnStdout: true, script: 'date +%d-%m-%Y').trim()
-                        sh 'docker push arunpateldaynil/spring-boot-hello-api_with-jenkins-pipeline-dockerfile:${currentDate}'
+                        sh "docker push arunpateldaynil/spring-boot-hello-api_with-jenkins-pipeline-dockerfile:${currentDate}"
                     }
                 }
             }
